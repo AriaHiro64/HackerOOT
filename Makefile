@@ -12,8 +12,8 @@ COMPILER ?= gcc
 # If DEBUG_BUILD is 1, compile with DEBUG_ROM defined
 DEBUG_BUILD ?= 1
 
-# Valid compression algorithms are yaz lzo and aplib
-COMPRESSION ?= yaz
+# Valid compression algorithms are yaz lzo zlib and aplib
+COMPRESSION ?= zlib
 
 ifeq ($(COMPRESSION),lzo)
   CFLAGS += -DCOMPRESSION_LZO
@@ -28,6 +28,11 @@ endif
 ifeq ($(COMPRESSION),aplib)
   CFLAGS += -DCOMPRESSION_APLIB
   CPPFLAGS += -DCOMPRESSION_APLIB
+endif
+
+ifeq ($(COMPRESSION),zlib)
+  CFLAGS += -DCOMPRESSION_ZLIB
+  CPPFLAGS += -DCOMPRESSION_ZLIB
 endif
 
 CFLAGS ?=
@@ -192,6 +197,7 @@ $(shell mkdir -p build/baserom build/assets/text $(foreach dir,$(SRC_DIRS) $(UND
 build/src/libultra/libc/ll.o: OPTFLAGS := -Ofast
 build/src/%.o: CC := $(CC) -fexec-charset=euc-jp
 
+build/src/boot/zlib.o: OPTFLAGS := -O0
 build/src/overlays/actors/ovl_Item_Shield/%.o: OPTFLAGS := -O2
 build/src/overlays/actors/ovl_En_Part/%.o: OPTFLAGS := -O2
 build/src/overlays/actors/ovl_Item_B_Heart/%.o: OPTFLAGS := -O0
