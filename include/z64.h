@@ -627,7 +627,11 @@ typedef struct {
     /* 0x022C */ s16    beatingHeartOscillatorDirection;
     /* 0x022E */ s16    unk_22E;
     /* 0x0230 */ s16    lensMagicConsumptionTimer; // When lens is active, 1 unit of magic is consumed every time the timer reaches 0
+#ifdef INCREASE_RUPEE_MAX
+    /* 0x0232 */ s32    counterDigits[5]; // used for key and rupee counters
+#else
     /* 0x0232 */ s16    counterDigits[4]; // used for key and rupee counters
+#endif
     /* 0x023A */ u8     numHorseBoosts;
     /* 0x023C */ u16    unk_23C;
     /* 0x023E */ u16    hbaAmmo; // ammo while playing the horseback archery minigame

@@ -8,6 +8,10 @@
 // Configure dialogue print speed (1 is vanilla)
 #define DIALOGUE_PRINT_SPEED 2
 
+// Increase the amount of rupees you can hold to an obsurd amount.
+// 999 for the child wallet, 9999 for the adult, and 99999 for the giant wallet.
+// #define INCREASE_RUPEE_MAX
+
 // Rupee counter icon changes color with wallet upgrades like in MM
 #define MM_WALLET_ICON_COLORS
 

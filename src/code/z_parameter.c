@@ -1357,7 +1357,11 @@ u8 Item_Give(PlayState* play, u8 item) {
     static s16 sAmmoRefillCounts[] = { 5, 10, 20, 30 }; // Sticks, nuts, bombs
     static s16 sArrowRefillCounts[] = { 5, 10, 30 };
     static s16 sBombchuRefillCounts[] = { 5, 20 };
+    #ifdef INCREASE_RUPEE_MAX
+    static s32 sRupeeRefillCounts[] = { 1, 5, 20, 50, 200, 10 };
+    #else
     static s16 sRupeeRefillCounts[] = { 1, 5, 20, 50, 200, 10 };
+    #endif
     s16 i;
     s16 slot;
     s16 temp;
@@ -2239,8 +2243,11 @@ s32 Health_ChangeBy(PlayState* play, s16 amount) {
 void Health_GiveHearts(s16 hearts) {
     gSaveContext.healthCapacity += hearts * 0x10;
 }
-
+#ifdef INCREASE_RUPEE_MAX
+void Rupees_ChangeBy(s32 rupeeChange) {
+#else
 void Rupees_ChangeBy(s16 rupeeChange) {
+#endif
     gSaveContext.rupeeAccumulator += rupeeChange;
 }
 
@@ -3120,8 +3127,13 @@ void Interface_Draw(PlayState* play) {
     static s16 D_80125B1C[][3] = {
         { 0, 150, 0 }, { 100, 255, 0 }, { 255, 255, 255 }, { 0, 0, 0 }, { 255, 255, 255 },
     };
+#ifdef INCREASE_RUPEE_MAX
+    static s32 rupeeDigitsFirst[] = { 2, 1, 0 };
+    static s32 rupeeDigitsCount[] = { 3, 4, 5 };
+#else
     static s16 rupeeDigitsFirst[] = { 1, 0, 0 };
     static s16 rupeeDigitsCount[] = { 2, 3, 3 };
+#endif
     static s16 spoilingItemEntrances[] = { ENTR_LOST_WOODS_2, ENTR_ZORAS_DOMAIN_3, ENTR_ZORAS_DOMAIN_3 };
     static f32 D_80125B54[] = { -40.0f, -35.0f }; // unused
     static s16 D_80125B5C[] = { 91, 91 };         // unused
@@ -3241,7 +3253,32 @@ void Interface_Draw(PlayState* play) {
 
         gDPSetCombineLERP(OVERLAY_DISP++, 0, 0, 0, PRIMITIVE, TEXEL0, 0, PRIMITIVE, 0, 0, 0, 0, PRIMITIVE, TEXEL0, 0,
                           PRIMITIVE, 0);
+#ifdef INCREASE_RUPEE_MAX
+        interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
+        interfaceCtx->counterDigits[1] = interfaceCtx->counterDigits[2] = 0;
+        interfaceCtx->counterDigits[2] = interfaceCtx->counterDigits[3] = 0;
+        interfaceCtx->counterDigits[4] = gSaveContext.rupees;
 
+        if ((interfaceCtx->counterDigits[4] > 99999) || (interfaceCtx->counterDigits[4] < 0)) {
+            interfaceCtx->counterDigits[4] &= 0xDDD;
+        }
+        while (interfaceCtx->counterDigits[4] >= 10000) {
+            interfaceCtx->counterDigits[0]++;
+            interfaceCtx->counterDigits[4] -= 10000;
+        }
+        while (interfaceCtx->counterDigits[4] >= 1000) {
+            interfaceCtx->counterDigits[1]++;
+            interfaceCtx->counterDigits[4] -= 1000;
+        }
+        while (interfaceCtx->counterDigits[4] >= 100) {
+            interfaceCtx->counterDigits[2]++;
+            interfaceCtx->counterDigits[4] -= 100;
+        }
+        while (interfaceCtx->counterDigits[4] >= 10) {
+            interfaceCtx->counterDigits[3]++;
+            interfaceCtx->counterDigits[4] -= 10;
+        }
+#else
         interfaceCtx->counterDigits[0] = interfaceCtx->counterDigits[1] = 0;
         interfaceCtx->counterDigits[2] = gSaveContext.rupees;
 
@@ -3258,6 +3295,7 @@ void Interface_Draw(PlayState* play) {
             interfaceCtx->counterDigits[1]++;
             interfaceCtx->counterDigits[2] -= 10;
         }
+#endif
 
         svar2 = rupeeDigitsFirst[CUR_UPG_VALUE(UPG_WALLET)];
         svar5 = rupeeDigitsCount[CUR_UPG_VALUE(UPG_WALLET)];

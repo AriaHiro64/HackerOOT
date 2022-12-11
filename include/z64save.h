@@ -182,7 +182,11 @@ typedef struct {
     /* 0x0030 */ s16 health; // "now_life"
     /* 0x0032 */ s8 magicLevel; // 0 for no magic/new load, 1 for magic, 2 for double magic
     /* 0x0033 */ s8 magic; // current magic available for use
+#ifdef INCREASE_RUPEE_MAX
+    /* 0x0034 */ s32 rupees;
+#else
     /* 0x0034 */ s16 rupees;
+#endif
     /* 0x0036 */ u16 swordHealth;
     /* 0x0038 */ u16 naviTimer;
     /* 0x003A */ u8 isMagicAcquired;
@@ -236,7 +240,11 @@ typedef struct {
     /* 0x13C7 */ u8 showTitleCard;
     /* 0x13C8 */ s16 nayrusLoveTimer;
     /* 0x13CA */ char unk_13CA[0x0002];
+#ifdef INCREASE_RUPEE_MAX
+s32 rupeeAccumulator;
+#else
     /* 0x13CC */ s16 rupeeAccumulator;
+#endif
     /* 0x13CE */ s16 timerState; // See `TimerState`
     /* 0x13D0 */ s16 timerSeconds;
     /* 0x13D2 */ s16 subTimerState; // See `SubTimerState`

@@ -5,8 +5,6 @@
 #include "macros.h"
 #include "config.h"
 
-#include "config.h"
-
 f32 fabsf(f32 f);
 #ifndef __sgi
 #define fabsf(f) __builtin_fabsf((f32)(f))
@@ -990,7 +988,11 @@ void Interface_SetDoAction(PlayState* play, u16 action);
 void Interface_SetNaviCall(PlayState* play, u16 naviCallState);
 void Interface_LoadActionLabelB(PlayState* play, u16 action);
 s32 Health_ChangeBy(PlayState* play, s16 amount);
+#ifdef INCREASE_RUPEE_MAX
+void Rupees_ChangeBy(s32 rupeeChange);
+#else
 void Rupees_ChangeBy(s16 rupeeChange);
+#endif
 void Inventory_ChangeAmmo(s16 item, s16 ammoChange);
 void Magic_Fill(PlayState* play);
 void Magic_Reset(PlayState* play);

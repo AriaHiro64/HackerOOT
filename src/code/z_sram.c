@@ -15,7 +15,11 @@ typedef struct {
     /* 0x14 */ s16 health;         // "now_life"
     /* 0x16 */ s8 magicLevel;
     /* 0x17 */ s8 magic;
+#ifdef OBSENE_RUPEE_AMOUNT
+    /* 0x18 */ u32 rupees;
+#else
     /* 0x18 */ s16 rupees;
+#endif
     /* 0x1A */ u16 swordHealth;
     /* 0x1C */ u16 naviTimer;
     /* 0x1E */ u8 isMagicAcquired;

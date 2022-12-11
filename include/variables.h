@@ -86,7 +86,11 @@ extern u16 gEquipNegMasks[EQUIP_TYPE_MAX];
 extern u32 gUpgradeMasks[UPG_MAX];
 extern u8 gEquipShifts[EQUIP_TYPE_MAX];
 extern u8 gUpgradeShifts[UPG_MAX];
+#ifdef INCREASE_RUPEE_MAX
+extern u32 gUpgradeCapacities[UPG_MAX][4];
+#else
 extern u16 gUpgradeCapacities[UPG_MAX][4];
+#endif
 extern u32 gGsFlagsMasks[4];
 extern u32 gGsFlagsShifts[4];
 extern void* gItemIcons[0x82];

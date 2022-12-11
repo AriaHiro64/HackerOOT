@@ -62,13 +62,20 @@ u8 gUpgradeShifts[UPG_MAX] = {
     17, // UPG_DEKU_STICKS
     20, // UPG_DEKU_NUTS
 };
-
+#ifdef INCREASE_RUPEE_MAX
+u32 gUpgradeCapacities[UPG_MAX][4] = {
+#else
 u16 gUpgradeCapacities[UPG_MAX][4] = {
+#endif
     { 0, 30, 40, 50 },     // UPG_QUIVER
     { 0, 20, 30, 40 },     // UPG_BOMB_BAG
     { 0, 0, 0, 0 },        // UPG_STRENGTH (unused)
     { 0, 0, 0, 0 },        // UPG_SCALE (unused)
+#ifdef INCREASE_RUPEE_MAX
+    { 999, 9999, 99999, 99999 }, // UPG_WALLET
+#else
     { 99, 200, 500, 500 }, // UPG_WALLET
+#endif
     { 0, 30, 40, 50 },     // UPG_BULLET_BAG
     { 0, 10, 20, 30 },     // UPG_DEKU_STICKS
     { 0, 20, 30, 40 },     // UPG_DEKU_NUTS
