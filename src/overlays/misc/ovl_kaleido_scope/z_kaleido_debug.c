@@ -104,7 +104,11 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
     Input* input = &play->state.input[0];
     Gfx* gfx;
     Gfx* gfxRef;
+#ifdef INCREASE_RUPEE_MAX
+    s32 spD8[4];
+#else
     s16 spD8[4];
+#endif
     s16 slot;
     s16 i;
     s16 j;
@@ -146,7 +150,28 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
 
     gDPPipeSync(POLY_OPA_DISP++);
     gDPSetPrimColor(POLY_OPA_DISP++, 0, 0, 255, 255, 255, 255);
+#ifdef INCREASE_RUPEE_MAX
+    spD8[0] = spD8[1] = spD8[2] = spD8[3] = 0;
+    spD8[4] = gSaveContext.rupees;
+    while (spD8[4] >= 10000) {
+        spD8[0]++;
+        spD8[4] -= 10000;
+    }
 
+    while (spD8[4] >= 1000) {
+        spD8[1]++;
+        spD8[4] -= 1000;
+    }
+
+    while (spD8[4] >= 100) {
+        spD8[2]++;
+        spD8[4] -= 100;
+    }
+    while (spD8[4] >= 10) {
+        spD8[3]++;
+        spD8[4] -= 10;
+    }
+#else
     // Rupees
     spD8[0] = spD8[1] = spD8[2] = 0;
     spD8[3] = gSaveContext.rupees;
@@ -164,8 +189,12 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
         spD8[2]++;
         spD8[3] -= 10;
     }
-
+#endif
+#ifdef INCREASE_RUPEE_MAX
+    for (i = 0, x = 68; i < 5; i++, x += 10) {
+#else
     for (i = 0, x = 68; i < 4; i++, x += 10) {
+#endif
         KaleidoScope_DrawDigit(play, spD8[i], x, 15);
     }
 
@@ -353,8 +382,13 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
                 }
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CDOWN)) {
                 gSaveContext.rupees += 100;
+#ifdef INCREASE_RUPEE_MAX
+                if (gSaveContext.rupees >= 99999) {
+                    gSaveContext.rupees = 99999;
+#else
                 if (gSaveContext.rupees >= 9999) {
                     gSaveContext.rupees = 9999;
+#endif
                 }
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CLEFT)) {
                 gSaveContext.rupees--;
@@ -363,8 +397,13 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
                 }
             } else if (CHECK_BTN_ALL(input->press.button, BTN_CRIGHT)) {
                 gSaveContext.rupees++;
+#ifdef INCREASE_RUPEE_MAX
+                if (gSaveContext.rupees >= 99999) {
+                    gSaveContext.rupees = 99999;
+#else
                 if (gSaveContext.rupees >= 9999) {
                     gSaveContext.rupees = 9999;
+#endif
                 }
             }
             break;
@@ -632,7 +671,11 @@ void KaleidoScope_DrawDebugEditor(PlayState* play) {
 
     if (curSection == 0) {
         gDPFillRectangle(POLY_OPA_DISP++, sSectionPositions[curSection][0], sSectionPositions[curSection][1],
+#ifdef INCREASE_RUPEE_MAX
+                         sSectionPositions[curSection][0] + 55, sSectionPositions[curSection][1] + 16);
+#else
                          sSectionPositions[curSection][0] + 45, sSectionPositions[curSection][1] + 16);
+#endif
     } else if ((curSection >= 0x1B) || (curSection == 0x5B)) {
         gDPFillRectangle(POLY_OPA_DISP++, sSectionPositions[curSection][0] - 2, sSectionPositions[curSection][1],
                          sSectionPositions[curSection][0] + 14, sSectionPositions[curSection][1] + 16);

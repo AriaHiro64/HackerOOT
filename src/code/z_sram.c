@@ -15,8 +15,8 @@ typedef struct {
     /* 0x14 */ s16 health;         // "now_life"
     /* 0x16 */ s8 magicLevel;
     /* 0x17 */ s8 magic;
-#ifdef OBSENE_RUPEE_AMOUNT
-    /* 0x18 */ u32 rupees;
+#ifdef INCREASE_RUPEE_MAX
+    /* 0x18 */ s32 rupees;
 #else
     /* 0x18 */ s16 rupees;
 #endif
@@ -241,7 +241,11 @@ static SavePlayerData sDebugSavePlayerData = {
     0xE0,                                               // health
     0,                                                  // magicLevel
     MAGIC_NORMAL_METER,                                 // magic
+#ifdef INCREASE_RUPEE_MAX
+    9999,                                              // rupees
+#else
     150,                                                // rupees
+#endif
     8,                                                  // swordHealth
     0,                                                  // naviTimer
     true,                                               // isMagicAcquired
