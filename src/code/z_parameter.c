@@ -3243,7 +3243,7 @@ void Interface_Draw(PlayState* play) {
         // Rupee Counter
         gDPPipeSync(OVERLAY_DISP++);
 
-        if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {
+        if (gSaveContext.rupees == CUR_CAPACITY(UPG_WALLET)) {i
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 120, 255, 0, interfaceCtx->magicAlpha);
         } else if (gSaveContext.rupees != 0) {
             gDPSetPrimColor(OVERLAY_DISP++, 0, 0, 255, 255, 255, interfaceCtx->magicAlpha);
