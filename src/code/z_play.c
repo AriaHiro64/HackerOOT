@@ -459,6 +459,23 @@ void Play_Update(PlayState* this) {
     u32 i;
     s32 pad2;
 
+    u32 sPrevTime = 0;
+    u32 sDeltaTime = 0;
+    s32 sTotalTime = 0;
+
+    sDeltaTime = osGetTime() - sPrevTime;
+    sPrevTime = osGetTime();
+    sTotalTime += OS_CYCLES_TO_USEC(sDeltaTime);
+    sTotalTime -= 16666;
+    R_UPDATE_RATE = 1;
+    while (sTotalTime > 16666) {
+        sTotalTime -= 16666;
+        R_UPDATE_RATE++;
+        if (R_UPDATE_RATE == 3) {
+            sTotalTime = 0;
+        }
+    }
+
     input = this->state.input;
 
     if ((SREG(1) < 0) || (DREG(0) != 0)) {
@@ -509,7 +526,6 @@ void Play_Update(PlayState* this) {
                     } else {
                         sTransitionTile.zBuffer = (u16*)gZBuffer;
                         gTransitionTileState = TRANS_TILE_READY;
-                        R_UPDATE_RATE = 1;
                     }
                     break;
 
@@ -667,7 +683,6 @@ void Play_Update(PlayState* this) {
                             if (gTransitionTileState == TRANS_TILE_READY) {
                                 TransitionTile_Destroy(&sTransitionTile);
                                 gTransitionTileState = TRANS_TILE_OFF;
-                                R_UPDATE_RATE = 3;
                             }
                         }
 
@@ -715,7 +730,7 @@ void Play_Update(PlayState* this) {
 
                     if (sTransitionFillTimer >= 20) {
                         gTransitionTileState = TRANS_TILE_OFF;
-                        R_UPDATE_RATE = 3;
+                        R_UPDATE_RATE = R_GRAPH_TASKSET00_FLAGS;
                         this->transitionTrigger = TRANS_TRIGGER_OFF;
                         this->transitionMode = TRANS_MODE_OFF;
                         this->envCtx.fillScreen = false;
@@ -749,7 +764,7 @@ void Play_Update(PlayState* this) {
                         this->transitionMode = TRANS_MODE_OFF;
                     } else {
                         gTransitionTileState = TRANS_TILE_OFF;
-                        R_UPDATE_RATE = 3;
+                        R_UPDATE_RATE = R_GRAPH_TASKSET00_FLAGS;
                         this->transitionTrigger = TRANS_TRIGGER_OFF;
                         this->transitionMode = TRANS_MODE_OFF;
                     }
@@ -780,7 +795,7 @@ void Play_Update(PlayState* this) {
                     if (this->transitionTrigger == TRANS_TRIGGER_END) {
                         if (this->envCtx.sandstormPrimA < 110) {
                             gTransitionTileState = TRANS_TILE_OFF;
-                            R_UPDATE_RATE = 3;
+                            R_UPDATE_RATE = R_GRAPH_TASKSET00_FLAGS;
                             this->transitionTrigger = TRANS_TRIGGER_OFF;
                             this->transitionMode = TRANS_MODE_OFF;
                         }
@@ -815,7 +830,7 @@ void Play_Update(PlayState* this) {
                     if (this->transitionTrigger == TRANS_TRIGGER_END) {
                         if (this->envCtx.sandstormPrimA <= 0) {
                             gTransitionTileState = TRANS_TILE_OFF;
-                            R_UPDATE_RATE = 3;
+                            R_UPDATE_RATE = R_GRAPH_TASKSET00_FLAGS;
                             this->transitionTrigger = TRANS_TRIGGER_OFF;
                             this->transitionMode = TRANS_MODE_OFF;
                         }
@@ -838,7 +853,7 @@ void Play_Update(PlayState* this) {
 
                         if (gSaveContext.cutsceneTransitionControl <= 100) {
                             gTransitionTileState = TRANS_TILE_OFF;
-                            R_UPDATE_RATE = 3;
+                            R_UPDATE_RATE = R_GRAPH_TASKSET00_FLAGS;
                             this->transitionTrigger = TRANS_TRIGGER_OFF;
                             this->transitionMode = TRANS_MODE_OFF;
                         }

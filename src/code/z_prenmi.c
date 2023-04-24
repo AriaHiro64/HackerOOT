@@ -60,6 +60,4 @@ void PreNMI_Init(GameState* thisx) {
     this->state.destroy = PreNMI_Destroy;
     this->timer = 30;
     this->unk_A8 = 10;
-
-    R_UPDATE_RATE = 1;
 }

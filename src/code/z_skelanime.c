@@ -1113,7 +1113,7 @@ s32 LinkAnimation_Update(PlayState* play, SkelAnime* skelAnime) {
  */
 s32 LinkAnimation_Morph(PlayState* play, SkelAnime* skelAnime) {
     f32 prevMorphWeight = skelAnime->morphWeight;
-    f32 updateRate = R_UPDATE_RATE * 0.5f;
+    f32 updateRate = 3 * 0.5f;
 
     skelAnime->morphWeight -= skelAnime->morphRate * updateRate;
 

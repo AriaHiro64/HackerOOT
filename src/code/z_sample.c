@@ -88,7 +88,6 @@ void Sample_Init(GameState* thisx) {
 
     this->state.main = Sample_Main;
     this->state.destroy = Sample_Destroy;
-    R_UPDATE_RATE = 1;
     Sample_SetupView(this);
     Sample_LoadTitleStatic(this);
     SREG(37) = 0;
